@@ -1,4 +1,3 @@
-quiz application:
 
 import java.util.Scanner;
 import java.util.Timer;
