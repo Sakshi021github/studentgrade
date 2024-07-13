@@ -1,0 +1,103 @@
+quiz application:
+
+import java.util.Scanner;
+import java.util.Timer;
+import java.util.TimerTask;
+
+public class QuizApp {
+    private static int score = 0;
+    private static final int TIME_LIMIT = 10; // time limit per question in seconds
+    private static boolean timeUp = false;
+
+    public static void main(String[] args) {
+        String[] questions = {
+            "Which is the longest river in the world?",
+            "What is 22+22?",
+            "Who wrote 'Hamlet'?"
+        };
+
+        String[][] options = {
+            {"1. Amazon", "2. Nile", "3. Ganga", "4. Godavari"},
+            {"1. 18", "2. 19", "3. 44", "4. 20"},
+            {"1. Charles Dickens", "2. William Shakespeare", "3. Mark Twain", "4. J.K. Rowling"}
+        };
+
+        int[] answers = {2, 3, 2}; // Correct options
+
+        Scanner scanner = new Scanner(System.in);
+
+        for (int i = 0; i < questions.length; i++) {
+            timeUp = false;
+            System.out.println(questions[i]);
+
+            for (String option : options[i]) {
+                System.out.println(option);
+            }
+
+            Timer timer = new Timer();
+            TimerTask task = new TimerTask() {
+                @Override
+                public void run() {
+                    timeUp = true;
+                }
+            };
+
+            timer.schedule(task, TIME_LIMIT * 1000);
+
+            System.out.print("Enter your answer (1-4): ");
+            int userAnswer = -1;
+
+            while (!timeUp) {
+                if (scanner.hasNextInt()) {
+                    userAnswer = scanner.nextInt();
+                    break;
+                }
+            }
+
+            timer.cancel();
+
+            if (timeUp) {
+                System.out.println("\nTime's up!");
+            } else if (userAnswer == answers[i]) {
+                score++;
+                System.out.println("Correct!");
+            } else {
+                System.out.println("Wrong!");
+            }
+
+            System.out.println();
+        }
+
+        System.out.println("Your final score is: " + score + "/" + questions.length);
+        scanner.close();
+    }
+}
+
+Output:
+
+Which is the longest river in the world?
+1. Amazon
+2. Nile
+3. Ganga
+4. Godavari
+Enter your answer (1-4): 2
+Correct!
+
+What is 22+22?
+1. 18
+2. 19
+3. 44
+4. 20
+Enter your answer (1-4): 3
+Correct!
+
+Who wrote 'Hamlet'?
+1. Charles Dickens
+2. William Shakespeare
+3. Mark Twain
+4. J.K. Rowling
+Enter your answer (1-4): 2
+
+Time's up!
+
+Your final score is: 2/3
